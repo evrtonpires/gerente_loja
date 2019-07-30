@@ -31,6 +31,7 @@ class UsersTab extends StatelessWidget {
                 ),
                 focusedBorder: UnderlineInputBorder(
                     borderSide: BorderSide(color: Colors.pinkAccent))),
+            onChanged: _userBloc.onChangedSearch,
           ),
         ),
         Expanded(
