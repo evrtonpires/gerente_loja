@@ -1,7 +1,10 @@
+import 'dart:async';
+
 import 'package:bloc_pattern/bloc_pattern.dart';
 import 'package:gerente_loja/validators/login_validators.dart';
 import 'package:rxdart/rxdart.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 
 //Pagina com as Configurações do Bloc(responsavel pelo gerenciamento das telas)
 
@@ -12,9 +15,14 @@ class LoginBloc extends BlocBase with LoginValidators {
 //-----------------------------------------------------------------------------
   //Construtor
   LoginBloc(){
-    FirebaseAuth.instance.onAuthStateChanged.listen((usuario){
+    _streamSubscription = FirebaseAuth.instance.onAuthStateChanged.listen((usuario) async{
       if(usuario != null){
-
+        if(await verifyPrivileges(usuario)){
+          _stateController.add(LoginState.SUCCESS);
+        }else{
+          FirebaseAuth.instance.signOut();
+          _stateController.add(LoginState.FAIL);
+        }
       }else{
         _stateController.add(LoginState.IDLE);
       }
@@ -43,6 +51,8 @@ class LoginBloc extends BlocBase with LoginValidators {
 
   Stream<LoginState> get outState => _stateController.stream;
 
+  StreamSubscription _streamSubscription;
+
 //-----------------------------------------------------------------------------
   //Metodos
   @override
@@ -50,6 +60,8 @@ class LoginBloc extends BlocBase with LoginValidators {
     _emailController.close();
     _senhaController.close();
     _stateController.close();
+
+    _streamSubscription.cancel();
   }
 
   Function(String) get changeEmail => _emailController.sink.add;
@@ -66,6 +78,21 @@ class LoginBloc extends BlocBase with LoginValidators {
         email: email, password: senha)
         .catchError((e){
           _stateController.add(LoginState.FAIL);
+    });
+  }
+
+  Future<bool> verifyPrivileges(FirebaseUser user) async{
+    //verifica se no banco existe um usuario administrador e retorna true caso exista
+    return await Firestore.instance.collection("admins")
+        .document(user.uid).get()
+        .then((doc){
+          if(doc.data != null){
+            return true;
+          }else{
+            return false;
+          }
+    }).catchError((e){
+      return false;
     });
   }
 
