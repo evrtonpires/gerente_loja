@@ -1,0 +1,69 @@
+{
+  "project_info": {
+    "project_number": "784102041214",
+    "firebase_url": "https://lojavirtual-cbc67.firebaseio.com",
+    "project_id": "lojavirtual-cbc67",
+    "storage_bucket": "lojavirtual-cbc67.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:784102041214:android:4f0c1499d2a1038f",
+        "android_client_info": {
+          "package_name": "com.evrtonpires.gerente_loja"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "784102041214-mqu4n0r956g0vjl45mqivbv1qs65kucp.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyC3zCJ5BPykdal-WpGZ5sGFK3f1QJ-iaG0"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "784102041214-mqu4n0r956g0vjl45mqivbv1qs65kucp.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:784102041214:android:1d0729cc952136a7",
+        "android_client_info": {
+          "package_name": "com.evrtonpires.loja_virtual"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "784102041214-mqu4n0r956g0vjl45mqivbv1qs65kucp.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyC3zCJ5BPykdal-WpGZ5sGFK3f1QJ-iaG0"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "784102041214-mqu4n0r956g0vjl45mqivbv1qs65kucp.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
