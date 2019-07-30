@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:gerente_loja/tabs/users_tab.dart';
 
 class HomeScreen extends StatefulWidget {
   @override
@@ -68,7 +69,7 @@ class _HomeScreenState extends State<HomeScreen> {
       ),
 
       //definindo a pageView para ter telas de rolagem
-      body: PageView(
+        body: SafeArea(child: PageView(
         controller: _pageController,
         onPageChanged: (paginaClicada) {
           setState(() {
@@ -76,11 +77,11 @@ class _HomeScreenState extends State<HomeScreen> {
           });
         },
         children: <Widget>[
-          Container(color: Colors.red,),
+          UsersTab(),
           Container(color: Colors.yellow,),
           Container(color: Colors.green,),
         ],
-      ),
+        ),)
     );
   }
 }
