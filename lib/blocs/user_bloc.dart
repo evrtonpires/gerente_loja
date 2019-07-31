@@ -110,6 +110,5 @@ class UserBloc extends BlocBase {
     });
     return filteredUsers;
   }
-
 //-----------------------------------------------------------------------------
 }
