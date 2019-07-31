@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:gerente_loja/widgets/image_source_sheet.dart';
 
 class ImagesWidget extends FormField<List> {
 
   ImagesWidget({
+    BuildContext context,
     FormFieldSetter<List> onSaved,
     FormFieldValidator<List> validator,
     List initialValue,
@@ -44,7 +46,18 @@ class ImagesWidget extends FormField<List> {
                             Icons.camera_enhance, color: Colors.white,),
                           color: Colors.white.withAlpha(50),
                         ),
-                        onTap: () {}),
+                        onTap: () {
+                          showModalBottomSheet(
+                              context: context,
+                              builder: (context) =>
+                                  ImageSourceSheet(
+                                    onImageSelected: (image) {
+                                      Navigator.of(context).pop();
+                                      state.didChange(state.value..add(image));
+                                    },
+                                  )
+                          );
+                        }),
                   ),
               ),
             ),
@@ -56,6 +69,6 @@ class ImagesWidget extends FormField<List> {
           ],
         );
       }
-  )
+  );
 
 }
