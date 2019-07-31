@@ -30,7 +30,45 @@ class CategoryTile extends StatelessWidget {
                 color: Colors.grey[850],
                 fontWeight: FontWeight.w500,
               ),
-            )),
+            ),
+          children: <Widget>[
+            FutureBuilder<QuerySnapshot>(
+              future: category.reference.collection("items").getDocuments(),
+              builder: (context, snapshot) {
+                if (!snapshot.hasData)
+                  return Container();
+                else {
+                  return Column(
+                    children: snapshot.data.documents.map((doc) {
+                      return ListTile(
+                        leading: CircleAvatar(
+                          backgroundImage: NetworkImage(doc.data["images"][0]),
+                          backgroundColor: Colors.white,
+                        ),
+                        title: Text(doc.data["title"]),
+                        trailing: Text(
+                            "R\$${doc.data["price"].toStringAsFixed(2)}"),
+                        onTap: () {},
+                      );
+                    }).toList()
+                      ..add(
+                        ListTile(
+                          leading: CircleAvatar(
+                            backgroundColor: Colors.transparent,
+                            child: Icon(Icons.add, color: Colors.pinkAccent,),
+                          ),
+                          title: Text("Adicionar"),
+                          onTap: () {
+
+                          },
+                        ),
+                      ),
+                  );
+                }
+              },
+            ),
+          ],
+        ),
       ),
     );
   }
