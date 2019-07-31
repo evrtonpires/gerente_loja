@@ -22,6 +22,7 @@ class InputField extends StatelessWidget {
       stream: stream,
       builder: (context,snapshot){
         return TextField(
+          keyboardType: TextInputType.emailAddress,
           onChanged: onChanged,
           decoration: InputDecoration(
               icon: Icon(
@@ -35,7 +36,7 @@ class InputField extends StatelessWidget {
               ),
               contentPadding:
               EdgeInsets.only(left: 5, right: 30, bottom: 30, top: 30),
-          errorText: snapshot.hasError ? snapshot.error : null),
+              errorText: snapshot.hasError ? snapshot.error : null),
 
           style: TextStyle(
             color: Colors.white,
