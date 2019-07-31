@@ -2,6 +2,9 @@ import 'package:bloc_pattern/bloc_pattern.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:rxdart/rxdart.dart';
 
+//Enumerador
+enum SortCriteria { READY_FIRST, READY_LAST }
+
 class OrdersBloc extends BlocBase {
 //-----------------------------------------------------------------------------
 //Controlador
@@ -24,6 +27,10 @@ class OrdersBloc extends BlocBase {
   OrdersBloc() {
     _addOrdersListener();
   }
+
+//-----------------------------------------------------------------------------
+//Variavel para salvar ordenação
+  SortCriteria _criteria;
 
 //-----------------------------------------------------------------------------
 //Metodos
@@ -53,8 +60,49 @@ class OrdersBloc extends BlocBase {
         }
       });
 
-      _ordersController.add(_orders);
+      _sort();
     });
   }
+
 //-----------------------------------------------------------------------------
+//Funcao de ordenação
+
+  void setOrderCriteria(SortCriteria criteria) {
+    _criteria = criteria;
+    _sort();
+  }
+
+//-----------------------------------------------------------------------------
+//Funcao de criterio de ordenação
+  void _sort() {
+    switch (_criteria) {
+      case SortCriteria.READY_FIRST:
+        _orders.sort((a, b) {
+          int statusA = a.data["status"];
+          int statusB = b.data["status"];
+
+          if (statusA < statusB)
+            return 1;
+          else if (statusA > statusB)
+            return -1;
+          else
+            return 0;
+        });
+        break;
+      case SortCriteria.READY_LAST:
+        _orders.sort((a, b) {
+          int statusA = a.data["status"];
+          int statusB = b.data["status"];
+
+          if (statusA > statusB)
+            return 1;
+          else if (statusA < statusB)
+            return -1;
+          else
+            return 0;
+        });
+        break;
+    }
+    _ordersController.add(_orders);
+  }
 }

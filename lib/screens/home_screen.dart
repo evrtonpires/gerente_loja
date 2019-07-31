@@ -1,5 +1,6 @@
 import 'package:bloc_pattern/bloc_pattern.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_speed_dial/flutter_speed_dial.dart';
 import 'package:gerente_loja/blocs/orders_bloc.dart';
 import 'package:gerente_loja/blocs/user_bloc.dart';
 import 'package:gerente_loja/tabs/orders_tab.dart';
@@ -57,7 +58,7 @@ class _HomeScreenState extends State<HomeScreen> {
               onTap: (paginaClicada) {
                 _pageController.animateToPage(paginaClicada,
                     duration: Duration(milliseconds: 500),
-                    curve: Curves.easeOutBack);
+                    curve: Curves.ease);
               },
               items: [
                 BottomNavigationBarItem(
@@ -98,6 +99,49 @@ class _HomeScreenState extends State<HomeScreen> {
                   ),
                 )
 
-            )));
+            )
+        ),
+      floatingActionButton: _buildFloating(),
+    );
   }
+
+//-----------------------------------------------------------------------------
+//funcao do botao
+  Widget _buildFloating() {
+    switch (_paginaClicada) {
+      case 0:
+        return null;
+        break;
+      case 1:
+        return SpeedDial(
+          child: Icon(Icons.sort),
+          backgroundColor: Colors.pinkAccent,
+          overlayOpacity: 0.6,
+          overlayColor: Colors.black,
+          children: [
+            SpeedDialChild(
+                child: Icon(Icons.arrow_downward,
+                  color: Colors.pinkAccent,),
+                backgroundColor: Colors.white,
+                label: "Concluidos Abaixo",
+                labelStyle: TextStyle(fontSize: 14),
+                onTap: () {
+                  _ordersBloc.setOrderCriteria(SortCriteria.READY_LAST);
+                }
+            ),
+            SpeedDialChild(
+                child: Icon(Icons.arrow_upward,
+                  color: Colors.pinkAccent,),
+                backgroundColor: Colors.white,
+                label: "Concluidos Acima",
+                labelStyle: TextStyle(fontSize: 14),
+                onTap: () {
+                  _ordersBloc.setOrderCriteria(SortCriteria.READY_FIRST);
+                }
+            ),
+          ],
+        );
+    }
+  }
+//-----------------------------------------------------------------------------
 }
