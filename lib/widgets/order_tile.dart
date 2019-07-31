@@ -1,7 +1,22 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:gerente_loja/widgets/order_header.dart';
 
 class OrderTile extends StatelessWidget {
+//-----------------------------------------------------------------------------
+//Atributos
+  final DocumentSnapshot order;
+
+  final states = [
+    "", "Em Preparação", "Em Transporte", "Aguardando Entrega", "Entregue"
+  ];
+
+//-----------------------------------------------------------------------------
+//Construtor
+  OrderTile(this.order);
+
+//-----------------------------------------------------------------------------
+
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -9,8 +24,12 @@ class OrderTile extends StatelessWidget {
       child: Card(
         child: ExpansionTile(
           title: Text(
-            "#132165489 - Entregue",
-            style: TextStyle(color: Colors.green),
+            "#${order.documentID.substring(
+                order.documentID.length - 15, order.documentID.length)} - "
+                "${states[order.data["status"]]}",
+            style: TextStyle(
+                color: order.data["status"] != 4 ? Colors.grey[850] : Colors
+                    .green),
           ),
           children: <Widget>[
             Padding(
@@ -21,17 +40,20 @@ class OrderTile extends StatelessWidget {
                   OrderHeader(),
                   Column(
                     mainAxisSize: MainAxisSize.min,
-                    children: <Widget>[
-                      ListTile(
-                        title: Text("camiseta preta P"),
-                        subtitle: Text("camisetas / asas kajslk"),
+                    children: order.data["products"].map<Widget>((produto) {
+                      return ListTile(
+                        title: Text(produto["product"]["title"] + " - " +
+                            produto["size"]),
+                        subtitle: Text(
+                            produto["category"] + " / " + produto["pid"]),
                         trailing: Text(
-                          "2",
+                          produto["quantity"].toString(),
                           style: TextStyle(fontSize: 20),
                         ),
                         contentPadding: EdgeInsets.zero,
-                      ),
-                    ],
+                      );
+                    }
+                    ).toList(),
                   ),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,

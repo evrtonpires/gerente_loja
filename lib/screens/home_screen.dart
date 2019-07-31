@@ -1,5 +1,6 @@
 import 'package:bloc_pattern/bloc_pattern.dart';
 import 'package:flutter/material.dart';
+import 'package:gerente_loja/blocs/orders_bloc.dart';
 import 'package:gerente_loja/blocs/user_bloc.dart';
 import 'package:gerente_loja/tabs/orders_tab.dart';
 import 'package:gerente_loja/tabs/users_tab.dart';
@@ -21,6 +22,7 @@ class _HomeScreenState extends State<HomeScreen> {
 //-----------------------------------------------------------------------------
 //UserBloc
   UserBloc _userBloc;
+  OrdersBloc _ordersBloc;
 
 //-----------------------------------------------------------------------------
   @override
@@ -28,6 +30,7 @@ class _HomeScreenState extends State<HomeScreen> {
     super.initState();
     _pageController = PageController();
     _userBloc = UserBloc();
+    _ordersBloc = OrdersBloc();
   }
 
   @override
@@ -76,21 +79,25 @@ class _HomeScreenState extends State<HomeScreen> {
         body: SafeArea(
             child: BlocProvider<UserBloc>(
               bloc: _userBloc,
-              child: PageView(
-                controller: _pageController,
-                onPageChanged: (paginaClicada) {
-                  setState(() {
-                    _paginaClicada = paginaClicada;
-                  });
-                },
-                children: <Widget>[
-                  UsersTab(),
-                  OrdersTab(),
-                  Container(
-                    color: Colors.green,
+                child: BlocProvider<OrdersBloc>(
+                  bloc: _ordersBloc,
+                  child: PageView(
+                    controller: _pageController,
+                    onPageChanged: (paginaClicada) {
+                      setState(() {
+                        _paginaClicada = paginaClicada;
+                      });
+                    },
+                    children: <Widget>[
+                      UsersTab(),
+                      OrdersTab(),
+                      Container(
+                        color: Colors.green,
+                      ),
+                    ],
                   ),
-                ],
-              ),
+                )
+
             )));
   }
 }
