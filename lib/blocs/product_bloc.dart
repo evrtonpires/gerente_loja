@@ -6,12 +6,15 @@ class ProductBloc extends BlocBase {
 //-----------------------------------------------------------------------------
 //Variaveis
   final _dataController = BehaviorSubject<Map>();
+  final _loadingController = BehaviorSubject<bool>();
   String categoryId;
   DocumentSnapshot product;
 
 //-----------------------------------------------------------------------------
 //Stream
-  Stream<Map> get ouData => _dataController.stream;
+  Stream<Map> get outData => _dataController.stream;
+
+  Stream<bool> get outLoading => _loadingController.stream;
 
 //-----------------------------------------------------------------------------
 //Map
@@ -44,6 +47,7 @@ class ProductBloc extends BlocBase {
   @override
   void dispose() {
     _dataController.close();
+    _loadingController.close();
   }
 
   void saveTitle(String title) {
@@ -60,5 +64,14 @@ class ProductBloc extends BlocBase {
 
   void saveImages(List images) {
     unsavedData["images"] = images;
+  }
+
+  Future<bool> saveProduct() async {
+    _loadingController.add(true);
+
+    await Future.delayed(Duration(seconds: 3));
+
+    _loadingController.add(false);
+    return true;
   }
 }
