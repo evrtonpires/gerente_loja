@@ -107,7 +107,7 @@ class _EditCategoryDialogState extends State<EditCategoryDialog> {
                             ? () async {
                                 await _categoryBloc.saveData();
                                 Navigator.of(context).pop();
-                              }
+                        }
                             : null,
                       );
                     })
