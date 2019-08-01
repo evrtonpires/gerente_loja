@@ -48,16 +48,45 @@ class _ProductScreenState extends State<ProductScreen> with ProductValidator {
       appBar: AppBar(
         backgroundColor: Colors.pinkAccent,
         elevation: 0,
-        title: Text("Criar Produto"),
+        title: StreamBuilder<bool>(
+            stream: _productBloc.outCreated,
+            initialData: false,
+            builder: (context, snapshot) {
+              return Text(snapshot.data ? "Editar Produto" : "Criar Produto");
+            }),
         actions: <Widget>[
-          IconButton(icon: Icon(Icons.remove), onPressed: () {}),
+          StreamBuilder<bool>(
+            stream: _productBloc.outCreated,
+            initialData: false,
+            builder: (context, snapshot) {
+              if (snapshot.data) {
+                return StreamBuilder<bool>(
+                  stream: _productBloc.outLoading,
+                  initialData: false,
+                  builder: (context, snapshot) {
+                    return IconButton(
+                        icon: Icon(Icons.remove),
+                        onPressed: snapshot.data
+                            ? null
+                            : () {
+                          _productBloc.deleteProduct();
+                          Navigator.of(context).pop();
+                        });
+                  },
+                );
+              } else {
+                return Container();
+              }
+            },
+          ),
           StreamBuilder<bool>(
             stream: _productBloc.outLoading,
             initialData: false,
             builder: (context, snapshot) {
               return IconButton(
-                  icon: Icon(Icons.save),
-                  onPressed: snapshot.data ? null : saveProduct);
+                icon: Icon(Icons.save),
+                onPressed: snapshot.data ? null : saveProduct,
+              );
             },
           ),
         ],
@@ -99,8 +128,8 @@ class _ProductScreenState extends State<ProductScreen> with ProductValidator {
                         validator: validateDescription,
                       ),
                       TextFormField(
-                        initialValue: snapshot.data["price"]?.toStringAsFixed(
-                            2),
+                        initialValue:
+                        snapshot.data["price"]?.toStringAsFixed(2),
                         style: _fieldStyle,
                         decoration: _buildDecoration("Preço"),
                         keyboardType:
@@ -162,6 +191,7 @@ class _ProductScreenState extends State<ProductScreen> with ProductValidator {
             success ? "Produto Salvo" : "Erro ao Salvar Produto",
             style: TextStyle(color: Colors.white),
           ),
+          duration: Duration(seconds: 3),
           backgroundColor: Colors.pinkAccent,
         ),
       );
