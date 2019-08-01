@@ -44,6 +44,7 @@ class _EditCategoryDialogState extends State<EditCategoryDialog> {
                             },
                           ));
                 },
+                //exibindo a imagem na hora de criar a categoria
                 child: StreamBuilder(
                     stream: _categoryBloc.outImage,
                     builder: (context, snapshot) {
@@ -64,6 +65,7 @@ class _EditCategoryDialogState extends State<EditCategoryDialog> {
                         return Icon(Icons.image);
                     }),
               ),
+              //passando o titulo da categoria
               title: StreamBuilder<String>(
                   stream: _categoryBloc.outTitle,
                   builder: (context, snapshot) {
