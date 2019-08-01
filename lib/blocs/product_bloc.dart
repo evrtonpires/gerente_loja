@@ -75,6 +75,10 @@ class ProductBloc extends BlocBase {
     unsavedData["images"] = images;
   }
 
+  void saveSizes(List size) {
+    unsavedData["sizes"] = size;
+  }
+
   Future<bool> saveProduct() async {
     _loadingController.add(true);
 

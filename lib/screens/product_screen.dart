@@ -144,9 +144,12 @@ class _ProductScreenState extends State<ProductScreen> with ProductValidator {
                         style: TextStyle(color: Colors.grey, fontSize: 12),
                       ),
                       ProductSizes(
+                        context: context,
                         initialValue: snapshot.data["sizes"],
-                        onSaved: (s) {},
-                        validator: (s) {},
+                        onSaved: _productBloc.saveSizes,
+                        validator: (s) {
+                          if (s.isEmpty) return "";
+                        },
                       ),
                     ],
                   );
